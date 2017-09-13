@@ -1,0 +1,10 @@
+// Place your settings in this file to overwrite default and user settings.
+{
+    "files.exclude": {
+        ".vscode": true,
+        "**/node_modules/": true,
+        ".eslintrc.json": true,
+        ".gitignore": true,
+        ".sass-lint.yml": true
+    }
+}

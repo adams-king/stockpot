@@ -1,0 +1,13 @@
+html {
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+* {
+    box-sizing: inherit;
+
+    &::before,
+    &::after {
+        box-sizing: inherit;
+    }
+}
