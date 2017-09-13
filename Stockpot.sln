@@ -9,9 +9,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "src\DataAcces
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogic", "src\BusinessLogic\BusinessLogic.csproj", "{98425EC9-2AB1-4CCE-ABAD-B39653AB5B82}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{0313CB25-9951-46B1-8403-3F77FEA4D641}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{0313CB25-9951-46B1-8403-3F77FEA4D641}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi.Tests", "test\WebApi.Tests\WebApi.Tests.csproj", "{2DCDFC81-FDC5-4AC1-B717-F90EC6FBF9CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi.Tests", "test\WebApi.Tests\WebApi.Tests.csproj", "{2DCDFC81-FDC5-4AC1-B717-F90EC6FBF9CA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{37069273-E7DF-47FE-A049-DB8035444C14}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
