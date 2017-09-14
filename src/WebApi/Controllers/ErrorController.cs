@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Stockpot.WebApi.ResponseObjects;
+using System.Text;
 
 namespace Stockpot.WebApi.Controllers
 {
@@ -25,17 +26,24 @@ namespace Stockpot.WebApi.Controllers
         [Route("[action]")]
         public IActionResult Exception()
         {
-            var feature = HttpContext.Features.Get<IExceptionHandlerFeature>();
-            var error = feature?.Error;
-            var message = error == null
-                ? "Unknown error"
-                : error.Message;
-
             // Return simple error when not in development mode.
             if (!_env.IsDevelopment())
             {
                 return new ObjectResult(new ExceptionResponse("Internal server error."));
             }
+
+            var feature = HttpContext.Features.Get<IExceptionHandlerFeature>();
+            var exception = feature.Error;
+            var sb = new StringBuilder();
+
+            while (exception != null)
+            {
+                sb.AppendLine(exception.Message);
+                exception = exception.InnerException;
+            }
+
+            var message = sb.ToString();
+            message = string.IsNullOrEmpty(message) ? "Unknown error" : message;
 
             return new ObjectResult(new ExceptionResponse(message));
         }
