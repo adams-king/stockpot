@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace WebApi.Tests
+namespace Stockpot.WebApi.Tests
 {
     public class UnitTest1
     {
