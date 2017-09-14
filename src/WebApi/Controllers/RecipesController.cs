@@ -84,9 +84,9 @@ namespace Stockpot.WebApi.Controllers
          * Ingredients
          */
         [HttpPost("{id}/ingredient/add")]
-        public async Task<IActionResult> AddIngredient(int id, [FromBody]NewRecipeIngredientDto newRecipeIngredient)
+        public async Task<IActionResult> AddIngredient(int id, [FromBody]AddRecipeIngredientDto addRecipeIngredient)
         {
-            await _recipesService.AddIngredient(id, newRecipeIngredient);
+            await _recipesService.AddIngredient(id, addRecipeIngredient);
 
             return NoContent();
         }

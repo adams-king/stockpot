@@ -52,17 +52,17 @@ namespace Stockpot.BusinessLogic.Recipes
         /*
         * Ingredients
         */
-        public async Task<int> AddIngredient(int recipeId, NewRecipeIngredientDto newRecipeIngredient)
+        public async Task<int> AddIngredient(int recipeId, AddRecipeIngredientDto addRecipeIngredient)
         {
             var recipe = await Repository.GetSingle(recipeId, true);
-            var ingredient = await _ingredientsRepository.GetSingle(newRecipeIngredient.IngredientId, true);
+            var ingredient = await _ingredientsRepository.GetSingle(addRecipeIngredient.IngredientId, true);
 
             var recipeIngredient = new RecipeIngredient
             {
                 Recipe = recipe,
                 Ingredient = ingredient,
-                Amount = newRecipeIngredient.Amount,
-                Unit = newRecipeIngredient.Unit
+                Amount = addRecipeIngredient.Amount,
+                Unit = addRecipeIngredient.Unit
             };
 
             Repository.AddIngredient(recipeIngredient);
