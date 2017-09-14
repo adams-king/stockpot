@@ -47,7 +47,9 @@ namespace Stockpot.BusinessLogic.Recipes
             var dto = new RecipeDtoFull();
             UpdateDto(dto, entity);
             dto.Ingredients = _recipeIngredientsDtoMapper.ToDto(entity.RecipeIngredients).ToArray();
-            dto.PreparationSteps = _preparationStepsDtoMapper.ToDto(entity.PreparationSteps).ToArray();
+            dto.PreparationSteps = _preparationStepsDtoMapper
+                .ToDto(entity.PreparationSteps.OrderBy(ps => ps.Order))
+                .ToArray();
             dto.Tags = _recipeTagsDtoMapper.ToDto(entity.RecipeTags).ToArray();
             return dto;
         }
