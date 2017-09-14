@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Stockpot.BusinessLogic.RecipeIngredients;
 using Stockpot.BusinessLogic.Recipes;
 using System.Threading.Tasks;
@@ -10,14 +9,11 @@ namespace Stockpot.WebApi.Controllers
     public class RecipesController : ControllerBase
     {
         private readonly RecipesService _recipesService;
-        private readonly ILogger<RecipesController> _logger;
 
         public RecipesController(
-            RecipesService recipeService,
-            ILogger<RecipesController> logger)
+            RecipesService recipeService)
         {
             _recipesService = recipeService;
-            _logger = logger;
         }
 
         [HttpGet]
@@ -48,16 +44,16 @@ namespace Stockpot.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]RecipeDto recipeDto)
+        public async Task<IActionResult> Post([FromBody]CreateUpdateRecipeDto dto)
         {
-            await _recipesService.Add(recipeDto);
+            await _recipesService.Add(dto);
             return NoContent();
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody]RecipeDto recipeDto)
+        public async Task<IActionResult> Put(int id, [FromBody]CreateUpdateRecipeDto dto)
         {
-            var changes = await _recipesService.Update(id, recipeDto);
+            var changes = await _recipesService.Update(id, dto);
 
             if (changes == 0)
             {
@@ -84,17 +80,17 @@ namespace Stockpot.WebApi.Controllers
          * Ingredients
          */
         [HttpPost("{id}/ingredient/add")]
-        public async Task<IActionResult> AddIngredient(int id, [FromBody]AddRecipeIngredientDto addRecipeIngredient)
+        public async Task<IActionResult> AddIngredient(int id, [FromBody]CreateRecipeIngredientDto dto)
         {
-            await _recipesService.AddIngredient(id, addRecipeIngredient);
+            await _recipesService.AddIngredient(id, dto);
 
             return NoContent();
         }
 
         [HttpPut("{id}/ingredient/update/{ingredientId}")]
-        public async Task<IActionResult> UpdateIngredient(int id, int ingredientId, [FromBody]UpdateRecipeIngredientDto updateRecipeIngredientDto)
+        public async Task<IActionResult> UpdateIngredient(int id, int ingredientId, [FromBody]UpdateRecipeIngredientDto dto)
         {
-            var changes = await _recipesService.UpdateIngredient(id, ingredientId, updateRecipeIngredientDto);
+            var changes = await _recipesService.UpdateIngredient(id, ingredientId, dto);
 
             if (changes == 0)
             {

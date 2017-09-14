@@ -4,7 +4,8 @@ using Stockpot.DataAccess.Repositories;
 
 namespace Stockpot.BusinessLogic.Ingredients
 {
-    public class IngredientsService : ServiceBase<IngredientsRepository, Ingredient, IngredientDto, int>
+    public class IngredientsService
+        : ServiceBaseSimple<IngredientsRepository, Ingredient, int, IngredientDto, CreateUpdateIngredientDto>
     {
         private readonly IngredientsDtoMapper _ingredientsDtoMapper;
 
@@ -17,6 +18,7 @@ namespace Stockpot.BusinessLogic.Ingredients
             _ingredientsDtoMapper = ingredientsDtoMapper;
         }
 
-        protected override IDtoMapper<Ingredient, IngredientDto> DtoMapper => _ingredientsDtoMapper;
+        protected override DtoMapperSimple<Ingredient, IngredientDto, CreateUpdateIngredientDto> DtoMapperSimple
+            => _ingredientsDtoMapper;
     }
 }

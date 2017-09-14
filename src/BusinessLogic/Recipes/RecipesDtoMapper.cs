@@ -7,7 +7,8 @@ using System.Linq;
 
 namespace Stockpot.BusinessLogic.Recipes
 {
-    public class RecipesDtoMapper : IDtoMapper<Recipe, RecipeDto>
+    public class RecipesDtoMapper
+        : DtoMapperSimple<Recipe, RecipeDto, CreateUpdateRecipeDto>
     {
         private readonly RecipeIngredientsDtoMapper _recipeIngredientsDtoMapper;
         private readonly PreparationStepsDtoMapper _preparationStepsDtoMapper;
@@ -21,6 +22,19 @@ namespace Stockpot.BusinessLogic.Recipes
             _recipeIngredientsDtoMapper = recipeIngredientsDtoMapper;
             _preparationStepsDtoMapper = preparationStepsDtoMapper;
             _recipeTagsDtoMapper = recipeTagsDtoMapper;
+        }
+
+        internal override RecipeDto ToDto(Recipe entity)
+        {
+            var dto = new RecipeDto();
+            UpdateDto(dto, entity);
+            return dto;
+        }
+
+        internal override void UpdateEntity(Recipe entity, CreateUpdateRecipeDto updateDto)
+        {
+            entity.Name = updateDto.Name;
+            entity.Description = updateDto.Description;
         }
 
         public IEnumerable<RecipeDtoFull> ToDtoFull(IEnumerable<Recipe> entities)
@@ -38,36 +52,11 @@ namespace Stockpot.BusinessLogic.Recipes
             return dto;
         }
 
-        public IEnumerable<RecipeDto> ToDto(IEnumerable<Recipe> entities)
-        {
-            return entities.Select(e => ToDto(e));
-        }
-
-        public RecipeDto ToDto(Recipe entity)
-        {
-            var dto = new RecipeDto();
-            UpdateDto(dto, entity);
-            return dto;
-        }
-
         public void UpdateDto(RecipeDto dto, Recipe entity)
         {
             dto.Id = entity.Id;
             dto.Name = entity.Name;
             dto.Description = entity.Description;
-        }
-
-        public Recipe ToEntity(RecipeDto dto)
-        {
-            var entity = new Recipe();
-            UpdateEntity(entity, dto);
-            return entity;
-        }
-
-        public void UpdateEntity(Recipe entity, RecipeDto dto)
-        {
-            entity.Name = dto.Name;
-            entity.Description = dto.Description;
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Stockpot.BusinessLogic.Ingredients;
 using System.Threading.Tasks;
 
@@ -9,14 +8,11 @@ namespace Stockpot.WebApi.Controllers
     public class IngredientsController : ControllerBase
     {
         private readonly IngredientsService _ingredientsService;
-        private readonly ILogger<IngredientsController> _logger;
 
         public IngredientsController(
-            IngredientsService ingredientsService,
-            ILogger<IngredientsController> logger)
+            IngredientsService ingredientsService)
         {
             _ingredientsService = ingredientsService;
-            _logger = logger;
         }
 
         [HttpGet]
@@ -27,16 +23,16 @@ namespace Stockpot.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]IngredientDto ingredientDto)
+        public async Task<IActionResult> Post([FromBody]CreateUpdateIngredientDto dto)
         {
-            await _ingredientsService.Add(ingredientDto);
+            await _ingredientsService.Add(dto);
             return NoContent();
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody]IngredientDto ingredientDto)
+        public async Task<IActionResult> Put(int id, [FromBody]CreateUpdateIngredientDto dto)
         {
-            var changes = await _ingredientsService.Update(id, ingredientDto);
+            var changes = await _ingredientsService.Update(id, dto);
 
             if (changes == 0)
             {

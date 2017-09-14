@@ -1,17 +1,21 @@
 ﻿using Stockpot.DataAccess.Entities;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Stockpot.BusinessLogic.RecipeIngredients
 {
-    public class RecipeIngredientsDtoMapper : IDtoMapper<RecipeIngredient, RecipeIngredientDto>
+    public class RecipeIngredientsDtoMapper
+        : DtoMapper<RecipeIngredient, RecipeIngredientDto, CreateRecipeIngredientDto, UpdateRecipeIngredientDto>
     {
-        public IEnumerable<RecipeIngredientDto> ToDto(IEnumerable<RecipeIngredient> entities)
+        internal override RecipeIngredient CreateEntity(CreateRecipeIngredientDto createDto)
         {
-            return entities.Select(e => ToDto(e));
+            return new RecipeIngredient
+            {
+                IngredientId = createDto.IngredientId,
+                Amount = createDto.Amount,
+                Unit = createDto.Unit
+            };
         }
 
-        public RecipeIngredientDto ToDto(RecipeIngredient entity)
+        internal override RecipeIngredientDto ToDto(RecipeIngredient entity)
         {
             return new RecipeIngredientDto
             {
@@ -22,14 +26,10 @@ namespace Stockpot.BusinessLogic.RecipeIngredients
             };
         }
 
-        public RecipeIngredient ToEntity(RecipeIngredientDto dto)
+        internal override void UpdateEntity(RecipeIngredient entity, UpdateRecipeIngredientDto updateDto)
         {
-            throw new System.NotImplementedException();
-        }
-
-        public void UpdateEntity(RecipeIngredient entity, RecipeIngredientDto dto)
-        {
-            throw new System.NotImplementedException();
+            entity.Amount = updateDto.Amount;
+            entity.Unit = updateDto.Unit;
         }
     }
 }

@@ -5,10 +5,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Stockpot.BusinessLogic.Recipes
 {
-    public class RecipeDto
+    public class RecipeDto : CreateUpdateRecipeDto
     {
         public int Id { get; set; }
+    }
 
+    public class CreateUpdateRecipeDto
+    {
         public string Name { get; set; }
 
         [Required]

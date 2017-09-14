@@ -7,26 +7,31 @@ using System.Threading.Tasks;
 
 namespace Stockpot.BusinessLogic.Recipes
 {
-    public class RecipesService : ServiceBase<RecipesRepository, Recipe, RecipeDto, int>
+    public class RecipesService
+        : ServiceBaseSimple<RecipesRepository, Recipe, int, RecipeDto, CreateUpdateRecipeDto>
     {
+        private readonly RecipesDtoMapper _recipesDtoMapper;
+        private readonly RecipeIngredientsDtoMapper _recipeIngredientsDtoMapper;
         private readonly IngredientsRepository _ingredientsRepository;
         private readonly TagsRepository _tagsRepository;
-        private readonly RecipesDtoMapper _recipesDtoMapper;
 
         public RecipesService(
             DbContextProvider dbContextProvider,
             RecipesDtoMapper recipesDtoMapper,
+            RecipeIngredientsDtoMapper recipeIngredientsDtoMapper,
             RecipesRepository recipesRepository,
             IngredientsRepository ingredientsRepository,
             TagsRepository tagsRepository)
             : base(dbContextProvider, recipesRepository)
         {
             _recipesDtoMapper = recipesDtoMapper;
+            _recipeIngredientsDtoMapper = recipeIngredientsDtoMapper;
             _ingredientsRepository = ingredientsRepository;
             _tagsRepository = tagsRepository;
         }
 
-        protected override IDtoMapper<Recipe, RecipeDto> DtoMapper => _recipesDtoMapper;
+        protected override DtoMapperSimple<Recipe, RecipeDto, CreateUpdateRecipeDto> DtoMapperSimple
+            => _recipesDtoMapper;
 
         public async Task<IEnumerable<RecipeDtoFull>> GetFull()
         {
@@ -52,18 +57,10 @@ namespace Stockpot.BusinessLogic.Recipes
         /*
         * Ingredients
         */
-        public async Task<int> AddIngredient(int recipeId, AddRecipeIngredientDto addRecipeIngredient)
+        public async Task<int> AddIngredient(int recipeId, CreateRecipeIngredientDto createRecipeIngredient)
         {
-            var recipe = await Repository.GetSingle(recipeId, true);
-            var ingredient = await _ingredientsRepository.GetSingle(addRecipeIngredient.IngredientId, true);
-
-            var recipeIngredient = new RecipeIngredient
-            {
-                Recipe = recipe,
-                Ingredient = ingredient,
-                Amount = addRecipeIngredient.Amount,
-                Unit = addRecipeIngredient.Unit
-            };
+            var recipeIngredient = _recipeIngredientsDtoMapper.CreateEntity(createRecipeIngredient);
+            recipeIngredient.RecipeId = recipeId;
 
             Repository.AddIngredient(recipeIngredient);
 
@@ -76,8 +73,7 @@ namespace Stockpot.BusinessLogic.Recipes
 
             if (recipeIngredient != null)
             {
-                recipeIngredient.Amount = updateRecipeIngredientDto.Amount;
-                recipeIngredient.Unit = updateRecipeIngredientDto.Unit;
+                _recipeIngredientsDtoMapper.UpdateEntity(recipeIngredient, updateRecipeIngredientDto);
             }
 
             return await DbContextProvider.SaveChangesAsync();

@@ -1,17 +1,11 @@
 ﻿using Stockpot.DataAccess.Entities;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Stockpot.BusinessLogic.Ingredients
 {
-    public class IngredientsDtoMapper : IDtoMapper<Ingredient, IngredientDto>
+    public class IngredientsDtoMapper
+        : DtoMapperSimple<Ingredient, IngredientDto, CreateUpdateIngredientDto>
     {
-        public IEnumerable<IngredientDto> ToDto(IEnumerable<Ingredient> entities)
-        {
-            return entities.Select(e => ToDto(e));
-        }
-
-        public IngredientDto ToDto(Ingredient entity)
+        internal override IngredientDto ToDto(Ingredient entity)
         {
             return new IngredientDto
             {
@@ -20,16 +14,9 @@ namespace Stockpot.BusinessLogic.Ingredients
             };
         }
 
-        public Ingredient ToEntity(IngredientDto dto)
+        internal override void UpdateEntity(Ingredient entity, CreateUpdateIngredientDto updateDto)
         {
-            var entity = new Ingredient();
-            UpdateEntity(entity, dto);
-            return entity;
-        }
-
-        public void UpdateEntity(Ingredient entity, IngredientDto dto)
-        {
-            entity.Name = dto.Name;
+            entity.Name = updateDto.Name;
         }
     }
 }

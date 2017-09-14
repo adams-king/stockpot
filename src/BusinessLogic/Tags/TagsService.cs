@@ -4,7 +4,8 @@ using Stockpot.DataAccess.Repositories;
 
 namespace Stockpot.BusinessLogic.Tags
 {
-    public class TagsService : ServiceBase<TagsRepository, Tag, TagDto, int>
+    public class TagsService
+        : ServiceBaseSimple<TagsRepository, Tag, int, TagDto, CreateUpdateTagDto>
     {
         private readonly TagsDtoMapper _tagsDtoMapper;
 
@@ -17,6 +18,7 @@ namespace Stockpot.BusinessLogic.Tags
             _tagsDtoMapper = tagsDtoMapper;
         }
 
-        protected override IDtoMapper<Tag, TagDto> DtoMapper => _tagsDtoMapper;
+        protected override DtoMapperSimple<Tag, TagDto, CreateUpdateTagDto> DtoMapperSimple
+            => _tagsDtoMapper;
     }
 }

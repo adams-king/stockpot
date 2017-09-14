@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Stockpot.BusinessLogic.Tags;
 using System.Threading.Tasks;
 
@@ -9,14 +8,11 @@ namespace Stockpot.WebApi.Controllers
     public class TagsController : ControllerBase
     {
         private readonly TagsService _tagsService;
-        private readonly ILogger<TagsController> _logger;
 
         public TagsController(
-            TagsService tagsService,
-            ILogger<TagsController> logger)
+            TagsService tagsService)
         {
             _tagsService = tagsService;
-            _logger = logger;
         }
 
         [HttpGet]
@@ -27,16 +23,16 @@ namespace Stockpot.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]TagDto tagDto)
+        public async Task<IActionResult> Post([FromBody]CreateUpdateTagDto dto)
         {
-            await _tagsService.Add(tagDto);
+            await _tagsService.Add(dto);
             return NoContent();
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody]TagDto tagDto)
+        public async Task<IActionResult> Put(int id, [FromBody]CreateUpdateTagDto dto)
         {
-            var changes = await _tagsService.Update(id, tagDto);
+            var changes = await _tagsService.Update(id, dto);
 
             if (changes == 0)
             {

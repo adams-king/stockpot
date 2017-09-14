@@ -1,39 +1,30 @@
 ﻿using Stockpot.DataAccess.Entities;
-using System.Collections.Generic;
-using System.Linq;
+using System;
 
 namespace Stockpot.BusinessLogic.PreparationSteps
 {
-    public class PreparationStepsDtoMapper : IDtoMapper<PreparationStep, PreparationStepDto>
+    public class PreparationStepsDtoMapper
+        : DtoMapper<PreparationStep, PreparationStepDto, CreatePreparationStepDto, UpdatePreparationStepDto>
     {
-        public IEnumerable<PreparationStepDto> ToDto(IEnumerable<PreparationStep> entities)
+        internal override PreparationStep CreateEntity(CreatePreparationStepDto createDto)
         {
-            return entities.Select(e => ToDto(e));
+            // Preparation steps have additional business logic logic
+            throw new InvalidOperationException();
         }
 
-        public PreparationStepDto ToDto(PreparationStep entity)
+        internal override PreparationStepDto ToDto(PreparationStep entity)
         {
             return new PreparationStepDto
             {
                 Id = entity.Id,
                 Order = entity.Order,
-                Description = entity.Description,
-                RecipeId = entity.RecipeId
+                Description = entity.Description
             };
         }
 
-        public PreparationStep ToEntity(PreparationStepDto dto)
+        internal override void UpdateEntity(PreparationStep entity, UpdatePreparationStepDto updateDto)
         {
-            var entity = new PreparationStep();
-            UpdateEntity(entity, dto);
-            return entity;
-        }
-
-        public void UpdateEntity(PreparationStep entity, PreparationStepDto dto)
-        {
-            entity.Order = dto.Order;
-            entity.Description = dto.Description;
-            entity.RecipeId = dto.RecipeId;
+            entity.Description = updateDto.Description;
         }
     }
 }

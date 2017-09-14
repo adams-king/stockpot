@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 
 namespace Stockpot.BusinessLogic
 {
-    public abstract class ServiceBase<TRepository, TEntity, TDto, TKey>
+    public abstract class ServiceBase<TRepository, TEntity, TKey, TDto, TCreateDto, TUpdateDto>
         where TRepository : RepositoryBase<TEntity, TKey>
         where TEntity : class, IEntity<TKey>
         where TDto : class
+        where TCreateDto : class
+        where TUpdateDto : class
     {
         private readonly DbContextProvider _dbContextProvider;
         private readonly TRepository _repository;
@@ -19,7 +21,7 @@ namespace Stockpot.BusinessLogic
             _repository = repository;
         }
 
-        protected abstract IDtoMapper<TEntity, TDto> DtoMapper { get; }
+        protected abstract DtoMapper<TEntity, TDto, TCreateDto, TUpdateDto> DtoMapper { get; }
 
         protected DbContextProvider DbContextProvider => _dbContextProvider;
 
@@ -39,14 +41,14 @@ namespace Stockpot.BusinessLogic
             return dto;
         }
 
-        public virtual async Task<int> Add(TDto dto)
+        public virtual async Task<int> Add(TCreateDto createDto)
         {
-            var entity = DtoMapper.ToEntity(dto);
+            var entity = DtoMapper.CreateEntity(createDto);
             _repository.Add(entity);
             return await _dbContextProvider.SaveChangesAsync();
         }
 
-        public virtual async Task<int> Update(TKey id, TDto dto)
+        public virtual async Task<int> Update(TKey id, TUpdateDto updateDto)
         {
             var entity = await _repository.GetSingleOrDefault(id, true);
 
@@ -55,7 +57,7 @@ namespace Stockpot.BusinessLogic
                 return 0;
             }
 
-            DtoMapper.UpdateEntity(entity, dto);
+            DtoMapper.UpdateEntity(entity, updateDto);
 
             return await _dbContextProvider.SaveChangesAsync();
         }

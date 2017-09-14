@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Stockpot.BusinessLogic.PreparationSteps;
 using System.Threading.Tasks;
 
@@ -9,27 +8,24 @@ namespace Stockpot.WebApi.Controllers
     public class PreparationStepsController : ControllerBase
     {
         private readonly PreparationStepsService _preparationStepsService;
-        private readonly ILogger<PreparationStepsController> _logger;
 
         public PreparationStepsController(
-            PreparationStepsService preparationStepsService,
-            ILogger<PreparationStepsController> logger)
+            PreparationStepsService preparationStepsService)
         {
             _preparationStepsService = preparationStepsService;
-            _logger = logger;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]PreparationStepDto preparationStepDto)
+        public async Task<IActionResult> Post([FromBody]CreatePreparationStepDto dto)
         {
-            await _preparationStepsService.Add(preparationStepDto);
+            await _preparationStepsService.Add(dto);
             return NoContent();
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody]PreparationStepDto preparationStepDto)
+        public async Task<IActionResult> Put(int id, [FromBody]UpdatePreparationStepDto dto)
         {
-            var changes = await _preparationStepsService.Update(id, preparationStepDto);
+            var changes = await _preparationStepsService.Update(id, dto);
 
             if (changes == 0)
             {

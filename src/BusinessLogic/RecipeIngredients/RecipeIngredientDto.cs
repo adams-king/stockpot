@@ -13,7 +13,7 @@ namespace Stockpot.BusinessLogic.RecipeIngredients
         public Unit Unit { get; set; }
     }
 
-    public class AddRecipeIngredientDto
+    public class CreateRecipeIngredientDto
     {
         public int IngredientId { get; set; }
 

@@ -46,11 +46,11 @@ namespace Stockpot.DataAccess.Repositories
         /*
         * Ingredients
         */
-        public async Task<RecipeIngredient> GetIngredient(int recipeId, int ingredientId, bool tracked = false)
+        public async Task<RecipeIngredient> GetIngredient(int recipeId, int ingredientId, bool track = false)
         {
             return await DbContext.RecipeIngredients
                 .Where(ri => ri.RecipeId == recipeId && ri.IngredientId == ingredientId)
-                .SetTracking(tracked)
+                .SetTracking(track)
                 .SingleOrDefaultAsync();
         }
 
@@ -67,11 +67,11 @@ namespace Stockpot.DataAccess.Repositories
         /*
         * Tags
         */
-        public async Task<RecipeTag> GetTag(int recipeId, int tagId, bool tracked = false)
+        public async Task<RecipeTag> GetTag(int recipeId, int tagId, bool track = false)
         {
             return await DbContext.RecipeTags
                 .Where(ri => ri.RecipeId == recipeId && ri.TagId == tagId)
-                .SetTracking(tracked)
+                .SetTracking(track)
                 .SingleOrDefaultAsync();
         }
 

@@ -1,11 +1,13 @@
 ﻿using Stockpot.DataAccess;
 using Stockpot.DataAccess.Entities;
 using Stockpot.DataAccess.Repositories;
+using System;
 using System.Threading.Tasks;
 
 namespace Stockpot.BusinessLogic.PreparationSteps
 {
-    public class PreparationStepsService : ServiceBase<PreparationStepsRepository, PreparationStep, PreparationStepDto, int>
+    public class PreparationStepsService
+        : ServiceBase<PreparationStepsRepository, PreparationStep, int, PreparationStepDto, CreatePreparationStepDto, UpdatePreparationStepDto>
     {
         private readonly PreparationStepsDtoMapper _preparationStepsDtoMapper;
 
@@ -18,15 +20,47 @@ namespace Stockpot.BusinessLogic.PreparationSteps
             _preparationStepsDtoMapper = preparationStepDtoMapper;
         }
 
-        protected override IDtoMapper<PreparationStep, PreparationStepDto> DtoMapper => _preparationStepsDtoMapper;
+        protected override DtoMapper<PreparationStep, PreparationStepDto, CreatePreparationStepDto, UpdatePreparationStepDto> DtoMapper
+            => _preparationStepsDtoMapper;
 
-        public override async Task<int> Add(PreparationStepDto dto)
+        public override async Task<int> Add(CreatePreparationStepDto createDto)
         {
-            // Override the order given in the dto
-            var maxOder = await Repository.GetMaxOrder(dto.RecipeId);
-            dto.Order = (byte)(maxOder + 1);
+            var maxOder = await Repository.GetMaxOrder(createDto.RecipeId);
 
-            return await base.Add(dto);
+            var preparationStep = new PreparationStep
+            {
+                Order = (byte)(maxOder + 1),
+                Description = createDto.Description,
+                RecipeId = createDto.RecipeId
+            };
+
+            Repository.Add(preparationStep);
+
+            return await DbContextProvider.SaveChangesAsync();
+        }
+
+        public override async Task<int> Delete(int id)
+        {
+            var toDelete = await Repository.GetSingleOrDefault(id);
+
+            if (toDelete == null)
+            {
+                return 0;
+            }
+
+            var changes = await base.Delete(id);
+
+            // Update order of other preperation steps
+            var preparationSteps = await Repository.GetByRecipe(toDelete.RecipeId, true);
+
+            for (int i = 0; i < preparationSteps.Length; i++)
+            {
+                preparationSteps[i].Order = (byte)(i + 1);
+            }
+
+            changes = changes + await DbContextProvider.SaveChangesAsync();
+
+            return changes;
         }
 
         public async Task<int> SwitchOrder(int fromId, int toId)
@@ -41,6 +75,12 @@ namespace Stockpot.BusinessLogic.PreparationSteps
                 return 0;
             }
 
+            // Make sure both are part of the same recipe
+            if (from.RecipeId != to.RecipeId)
+            {
+                throw new InvalidOperationException("Preparation steps must be part of the same recipe.");
+            }
+
             var changes = 0;
 
             var fromOrder = from.Order;
@@ -51,8 +91,9 @@ namespace Stockpot.BusinessLogic.PreparationSteps
             changes = changes + await DbContextProvider.SaveChangesAsync();
 
             from.Order = toOrder;
-            to.Order = fromOrder;
+            changes = changes + await DbContextProvider.SaveChangesAsync();
 
+            to.Order = fromOrder;
             changes = changes + await DbContextProvider.SaveChangesAsync();
 
             return changes;

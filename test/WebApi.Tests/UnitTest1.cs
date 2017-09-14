@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Moq;
 using Stockpot.BusinessLogic.Recipes;
 using Stockpot.WebApi.Controllers;
@@ -25,8 +24,7 @@ namespace Stockpot.WebApi.Tests
                         .FirstOrDefault());
                 });
 
-            var mockLogger = new Mock<ILogger<RecipesController>>();
-            _controller = new RecipesController(mockRepo.Object, mockLogger.Object);
+            _controller = new RecipesController(mockRepo.Object);
         }
 
         [Fact]

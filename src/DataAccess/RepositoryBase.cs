@@ -24,30 +24,40 @@ namespace Stockpot.DataAccess
             return _dbContext.Set<TEntity>();
         }
 
-        public async Task<TEntity[]> Get(bool tracked = false)
+        public async Task<TEntity[]> Get(bool track = false)
         {
             var entities = await GetDbSet()
-                .SetTracking(tracked)
+                .SetTracking(track)
                 .ToArrayAsync();
 
             return entities;
         }
 
-        public async Task<TEntity> GetSingle(TKey id, bool tracked = false)
+        public async Task<TEntity> GetSingle(TKey id, bool track = false)
         {
+            if (id == null)
+            {
+                new ArgumentNullException(nameof(id));
+            }
+
             var entity = await GetDbSet()
 				.Where(e => e.Id.Equals(id))
-                .SetTracking(tracked)
+                .SetTracking(track)
 				.SingleAsync();
 
             return entity;
         }
 
-        public async Task<TEntity> GetSingleOrDefault(TKey id, bool tracked = false)
+        public async Task<TEntity> GetSingleOrDefault(TKey id, bool track = false)
         {
+            if (id == null)
+            {
+                new ArgumentNullException(nameof(id));
+            }
+
             var entity = await GetDbSet()
                 .Where(e => e.Id.Equals(id))
-                .SetTracking(tracked)
+                .SetTracking(track)
                 .SingleOrDefaultAsync();
 
             return entity;
@@ -85,6 +95,11 @@ namespace Stockpot.DataAccess
 
         public async Task Delete(TKey id)
         {
+            if (id == null)
+            {
+                new ArgumentNullException(nameof(id));
+            }
+
             var entity = await GetSingleOrDefault(id);
 
             if (entity != null)
