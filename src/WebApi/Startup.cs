@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Stockpot.BusinessLogic.Ingredients;
+using Stockpot.BusinessLogic.PreparationSteps;
 using Stockpot.BusinessLogic.RecipeIngredients;
 using Stockpot.BusinessLogic.Recipes;
 using Stockpot.BusinessLogic.RecipeTags;
@@ -40,16 +41,19 @@ namespace Stockpot.WebApi
 
             // Add repositories
             services.AddScoped<IngredientsRepository>();
+            services.AddScoped<PreparationStepsRepository>();
             services.AddScoped<RecipesRepository>();
             services.AddScoped<TagsRepository>();
 
             // Add services
             services.AddScoped<IngredientsService>();
+            services.AddScoped<PreparationStepsService>();
             services.AddScoped<RecipesService>();
             services.AddScoped<TagsService>();
 
             // Add dto mappers
             services.AddScoped<IngredientsDtoMapper>();
+            services.AddScoped<PreparationStepsDtoMapper>();
             services.AddScoped<RecipeIngredientsDtoMapper>();
             services.AddScoped<RecipesDtoMapper>();
             services.AddScoped<RecipeTagsDtoMapper>();

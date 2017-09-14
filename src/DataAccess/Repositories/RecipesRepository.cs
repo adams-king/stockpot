@@ -17,6 +17,7 @@ namespace Stockpot.DataAccess.Repositories
             return await GetDbSet()
                 .Include(r => r.RecipeIngredients)
                 .ThenInclude(ri => ri.Ingredient)
+                .Include(r => r.PreparationSteps)
                 .Include(r => r.RecipeTags)
                 .ThenInclude(rt => rt.Tag)
                 .ToArrayAsync();
@@ -27,6 +28,7 @@ namespace Stockpot.DataAccess.Repositories
             return await GetDbSet()
                 .Include(r => r.RecipeIngredients)
                 .ThenInclude(ri => ri.Ingredient)
+                .Include(r => r.PreparationSteps)
                 .Include(r => r.RecipeTags)
                 .ThenInclude(rt => rt.Tag)
                 .Where(r => r.Id == id)

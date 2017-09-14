@@ -16,6 +16,8 @@ namespace Stockpot.DataAccess.Entities
 
         public ICollection<RecipeIngredient> RecipeIngredients { get; set; }
 
+        public ICollection<PreparationStep> PreparationSteps { get; set; }
+
         public ICollection<RecipeTag> RecipeTags { get; set; }
     }
 }

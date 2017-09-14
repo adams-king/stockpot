@@ -1,4 +1,5 @@
-﻿using Stockpot.BusinessLogic.RecipeIngredients;
+﻿using Stockpot.BusinessLogic.PreparationSteps;
+using Stockpot.BusinessLogic.RecipeIngredients;
 using Stockpot.BusinessLogic.RecipeTags;
 using Stockpot.DataAccess.Entities;
 using System.Collections.Generic;
@@ -9,13 +10,16 @@ namespace Stockpot.BusinessLogic.Recipes
     public class RecipesDtoMapper : IDtoMapper<Recipe, RecipeDto>
     {
         private readonly RecipeIngredientsDtoMapper _recipeIngredientsDtoMapper;
+        private readonly PreparationStepsDtoMapper _preparationStepsDtoMapper;
         private readonly RecipeTagsDtoMapper _recipeTagsDtoMapper;
 
         public RecipesDtoMapper(
             RecipeIngredientsDtoMapper recipeIngredientsDtoMapper,
+            PreparationStepsDtoMapper preparationStepsDtoMapper,
             RecipeTagsDtoMapper recipeTagsDtoMapper)
         {
             _recipeIngredientsDtoMapper = recipeIngredientsDtoMapper;
+            _preparationStepsDtoMapper = preparationStepsDtoMapper;
             _recipeTagsDtoMapper = recipeTagsDtoMapper;
         }
 
@@ -29,6 +33,7 @@ namespace Stockpot.BusinessLogic.Recipes
             var dto = new RecipeDtoFull();
             UpdateDto(dto, entity);
             dto.Ingredients = _recipeIngredientsDtoMapper.ToDto(entity.RecipeIngredients).ToArray();
+            dto.PreparationSteps = _preparationStepsDtoMapper.ToDto(entity.PreparationSteps).ToArray();
             dto.Tags = _recipeTagsDtoMapper.ToDto(entity.RecipeTags).ToArray();
             return dto;
         }

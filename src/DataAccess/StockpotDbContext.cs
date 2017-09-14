@@ -10,6 +10,8 @@ namespace Stockpot.DataAccess
 
         public DbSet<Ingredient> Ingredients { get; set; }
 
+        public DbSet<PreparationStep> PreparationSteps { get; set; }
+
         public DbSet<RecipeIngredient> RecipeIngredients { get; set; }
 
         public DbSet<Tag> Tags { get; set; }
@@ -26,6 +28,11 @@ namespace Stockpot.DataAccess
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Create unique index for RecipeId and Order
+            modelBuilder.Entity<PreparationStep>()
+                .HasIndex(ps => new { ps.RecipeId, ps.Order })
+                .IsUnique();
+
             // RecipeIngredient many-to-many
             modelBuilder.Entity<RecipeIngredient>()
                 .HasKey(ri => new { ri.RecipeId, ri.IngredientId });

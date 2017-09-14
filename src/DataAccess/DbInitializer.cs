@@ -41,20 +41,65 @@ namespace Stockpot.DataAccess
                 Description = "Best coffee in the world!",
                 RecipeIngredients = new List<RecipeIngredient>
                 {
-                    new RecipeIngredient {
+                    new RecipeIngredient
+                    {
                         Ingredient = ingredient1,
                         Amount = 1,
                         Unit = Unit.Tsp
                     },
-                    new RecipeIngredient {
+                    new RecipeIngredient
+                    {
                         Ingredient = ingredient2,
                         Amount = 1,
                         Unit = Unit.Tbsp
                     },
-                    new RecipeIngredient {
+                    new RecipeIngredient
+                    {
                         Ingredient = ingredient3,
                         Amount = 20,
                         Unit = Unit.Milliliter
+                    }
+                },
+                PreparationSteps = new List<PreparationStep>
+                {
+                    new PreparationStep
+                    {
+                        Order = 1,
+                        Description = "Boil the water."
+                    },
+                    new PreparationStep
+                    {
+                        Order = 2,
+                        Description = "Add coffee, sugar and milk into a mug."
+                    },
+                    new PreparationStep
+                    {
+                        Order = 3,
+                        Description = "Add the boiled water to the mug."
+                    }
+                },
+                RecipeTags = new List<RecipeTag>
+                {
+                    new RecipeTag
+                    {
+                        Tag = new Tag
+                        {
+                            Name = "Drink"
+                        }
+                    },
+                    new RecipeTag
+                    {
+                        Tag = new Tag
+                        {
+                            Name = "Vegan"
+                        }
+                    },
+                    new RecipeTag
+                    {
+                        Tag = new Tag
+                        {
+                            Name = "Vegetarian"
+                        }
                     }
                 }
             };

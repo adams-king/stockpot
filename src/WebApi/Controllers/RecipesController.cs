@@ -30,7 +30,7 @@ namespace Stockpot.WebApi.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var recipe = await _recipesService.GetSingleOrDefault(id);
+            var recipe = await _recipesService.GetFull(id);
 
             if (recipe == null)
             {

@@ -1,4 +1,5 @@
-﻿using Stockpot.BusinessLogic.RecipeIngredients;
+﻿using Stockpot.BusinessLogic.PreparationSteps;
+using Stockpot.BusinessLogic.RecipeIngredients;
 using Stockpot.BusinessLogic.RecipeTags;
 using System.ComponentModel.DataAnnotations;
 
@@ -17,6 +18,8 @@ namespace Stockpot.BusinessLogic.Recipes
     public class RecipeDtoFull : RecipeDto
     {
         public RecipeIngredientDto[] Ingredients { get; set; }
+
+        public PreparationStepDto[] PreparationSteps { get; set; }
 
         public RecipeTagDto[] Tags { get; set; }
     }
