@@ -1,0 +1,4 @@
+- Make sure foreign keys are non nullable when the reference is required
+	Adding the id as well as the entity to the parent seems to change the nullable setting of the foreign key
+- Return 201 (CreatedAtAction) when adding content
+- What to return for updates/deletes?
