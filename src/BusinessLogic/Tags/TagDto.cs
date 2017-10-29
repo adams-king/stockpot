@@ -1,4 +1,6 @@
-﻿namespace Stockpot.BusinessLogic.Tags
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Stockpot.BusinessLogic.Tags
 {
     public class TagDto : CreateUpdateTagDto
     {
@@ -7,6 +9,7 @@
 
     public class CreateUpdateTagDto
     {
+        [StringLength(200, MinimumLength = 3)]
         public string Name { get; set; }
 
         public bool IsRootTag { get; set; }

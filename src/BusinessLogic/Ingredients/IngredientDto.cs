@@ -1,4 +1,6 @@
-﻿namespace Stockpot.BusinessLogic.Ingredients
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Stockpot.BusinessLogic.Ingredients
 {
     public class IngredientDto : CreateUpdateIngredientDto
     {
@@ -7,6 +9,7 @@
 
     public class CreateUpdateIngredientDto
     {
+        [StringLength(200, MinimumLength = 2)]
         public string Name { get; set; }
     }
 }
