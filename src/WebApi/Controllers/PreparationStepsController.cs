@@ -16,16 +16,16 @@ namespace Stockpot.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]CreatePreparationStepDto dto)
+        public async Task<IActionResult> Post([FromBody]CreatePreparationStepDto createDto)
         {
-            await _preparationStepsService.Add(dto);
+            await _preparationStepsService.Add(createDto);
             return NoContent();
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody]UpdatePreparationStepDto dto)
+        public async Task<IActionResult> Put(int id, [FromBody]UpdatePreparationStepDto updateDto)
         {
-            var changes = await _preparationStepsService.Update(id, dto);
+            var changes = await _preparationStepsService.Update(id, updateDto);
 
             if (changes == 0)
             {
