@@ -76,6 +76,9 @@ namespace Stockpot.WebApi
             {
                 options.SwaggerDoc("v1", new Info { Title = "Stockpot API", Version = "v1" });
             });
+
+            // Enable CORS
+            services.AddCors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -90,6 +93,10 @@ namespace Stockpot.WebApi
             // Initialize database
             DbInitializer.Initialize(dbContextProvider);
 
+            // Add CORS
+            app.UseCors(builder => builder.WithOrigins("*"));
+
+            // Add swagger when in development
             if (env.IsDevelopment())
             {
                 // Enable middleware to serve generated Swagger as a JSON endpoint.
