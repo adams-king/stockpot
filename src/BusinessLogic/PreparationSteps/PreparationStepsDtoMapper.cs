@@ -1,5 +1,4 @@
 ﻿using Stockpot.DataAccess.Entities;
-using System;
 
 namespace Stockpot.BusinessLogic.PreparationSteps
 {
@@ -8,8 +7,11 @@ namespace Stockpot.BusinessLogic.PreparationSteps
     {
         internal override PreparationStep CreateEntity(CreatePreparationStepDto createDto)
         {
-            // Preparation steps have additional business logic logic
-            throw new InvalidOperationException();
+            return new PreparationStep
+            {
+                Description = createDto.Description,
+                RecipeId = createDto.RecipeId
+            };
         }
 
         internal override PreparationStepDto ToDto(PreparationStep entity)

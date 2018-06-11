@@ -25,17 +25,11 @@ namespace Stockpot.BusinessLogic.PreparationSteps
 
         public override async Task<int> Add(CreatePreparationStepDto createDto)
         {
+            var preparationStep = DtoMapper.CreateEntity(createDto);
             var maxOder = await Repository.GetMaxOrder(createDto.RecipeId);
-
-            var preparationStep = new PreparationStep
-            {
-                Order = (byte)(maxOder + 1),
-                Description = createDto.Description,
-                RecipeId = createDto.RecipeId
-            };
+            preparationStep.Order = (byte)(maxOder + 1);
 
             Repository.Add(preparationStep);
-
             return await DbContextProvider.SaveChangesAsync();
         }
 
