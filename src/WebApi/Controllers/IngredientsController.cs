@@ -22,17 +22,30 @@ namespace Stockpot.WebApi.Controllers
             return Ok(ingredients);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Post([FromBody]CreateUpdateIngredientDto dto)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
         {
-            await _ingredientsService.Add(dto);
+            var ingredient = await _ingredientsService.GetSingleOrDefault(id);
+
+            if (ingredient == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(ingredient);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody]CreateUpdateIngredientDto createDto)
+        {
+            var dto = await _ingredientsService.Add(createDto);
             return NoContent();
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody]CreateUpdateIngredientDto dto)
+        public async Task<IActionResult> Put(int id, [FromBody]CreateUpdateIngredientDto updateDto)
         {
-            var changes = await _ingredientsService.Update(id, dto);
+            var changes = await _ingredientsService.Update(id, updateDto);
 
             if (changes == 0)
             {
