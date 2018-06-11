@@ -1,4 +1,12 @@
+- Upgrade to latest .NET version
+- Don't create a dto after inserting a new entity
+- Use CreatedAtAction where possible
+
 - Make sure foreign keys are non nullable when the reference is required
 	Adding the id as well as the entity to the parent seems to change the nullable setting of the foreign key
 - Return 201 (CreatedAtAction) when adding content
 - What to return for updates/deletes?
+- Supply dto mapper to servicebase and servicebasesimple using contructor parameters
+- ModelState.IsValid should be done in services not the the controllers
+- Add unique key index to ingredients
+- Repository methods should return add / update etc
