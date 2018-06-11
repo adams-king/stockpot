@@ -23,16 +23,16 @@ namespace Stockpot.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]CreateUpdateTagDto dto)
+        public async Task<IActionResult> Post([FromBody]CreateUpdateTagDto createDto)
         {
-            await _tagsService.Add(dto);
+            await _tagsService.Add(createDto);
             return NoContent();
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody]CreateUpdateTagDto dto)
+        public async Task<IActionResult> Put(int id, [FromBody]CreateUpdateTagDto updateDto)
         {
-            var changes = await _tagsService.Update(id, dto);
+            var changes = await _tagsService.Update(id, updateDto);
 
             if (changes == 0)
             {
