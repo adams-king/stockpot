@@ -1,4 +1,4 @@
-﻿using Stockpot.BusinessLogic.RecipeIngredients;
+﻿using Stockpot.BusinessLogic.Ingredients;
 using Stockpot.DataAccess;
 using Stockpot.DataAccess.Entities;
 using Stockpot.DataAccess.Repositories;
@@ -11,27 +11,62 @@ namespace Stockpot.BusinessLogic.Recipes
         : ServiceBaseSimple<RecipesRepository, Recipe, int, RecipeDto, CreateUpdateRecipeDto>
     {
         private readonly RecipesDtoMapper _recipesDtoMapper;
-        private readonly RecipeIngredientsDtoMapper _recipeIngredientsDtoMapper;
-        private readonly IngredientsRepository _ingredientsRepository;
-        private readonly TagsRepository _tagsRepository;
+        private readonly IngredientsService _ingredientsService;
 
         public RecipesService(
             DbContextProvider dbContextProvider,
             RecipesDtoMapper recipesDtoMapper,
-            RecipeIngredientsDtoMapper recipeIngredientsDtoMapper,
             RecipesRepository recipesRepository,
-            IngredientsRepository ingredientsRepository,
-            TagsRepository tagsRepository)
+            IngredientsService ingredientsService)
             : base(dbContextProvider, recipesRepository)
         {
             _recipesDtoMapper = recipesDtoMapper;
-            _recipeIngredientsDtoMapper = recipeIngredientsDtoMapper;
-            _ingredientsRepository = ingredientsRepository;
-            _tagsRepository = tagsRepository;
+            _ingredientsService = ingredientsService;
         }
 
         protected override DtoMapperSimple<Recipe, RecipeDto, CreateUpdateRecipeDto> DtoMapperSimple
             => _recipesDtoMapper;
+
+        public async Task<int> AddFull(CreateRecipeDto createDto)
+        {
+            var recipe = new Recipe
+            {
+                Name = createDto.Name,
+                Description = createDto.Description
+            };
+
+            Repository.Add(recipe);
+
+            await DbContextProvider.SaveChangesAsync();
+
+            // Add ingredients
+            foreach (var recipeIngredientDto in createDto.Ingredients)
+            {
+                var ingredientDto = await _ingredientsService.GetOrCreate(recipeIngredientDto.Name);
+
+                var recipeIngredient = new RecipeIngredient
+                {
+                    IngredientId = ingredientDto.Id,
+                    Amount = recipeIngredientDto.Amount,
+                    Unit = recipeIngredientDto.Unit
+                };
+
+                recipe.RecipeIngredients.Add(recipeIngredient);
+            }
+
+            // Add preperation steps
+            foreach (var preparationStepDto in createDto.PreparationSteps)
+            {
+                var preparationStep = new PreparationStep
+                {
+                    Description = preparationStepDto.Description
+                };
+
+                recipe.PreparationSteps.Add(preparationStep);
+            }
+
+            return await DbContextProvider.SaveChangesAsync();
+        }
 
         public async Task<IEnumerable<RecipeDtoFull>> GetFull()
         {
@@ -57,6 +92,7 @@ namespace Stockpot.BusinessLogic.Recipes
         /*
         * Ingredients
         */
+        /*
         public async Task<int> AddIngredient(int recipeId, CreateRecipeIngredientDto createRecipeIngredient)
         {
             var recipeIngredient = _recipeIngredientsDtoMapper.CreateEntity(createRecipeIngredient);
@@ -90,10 +126,12 @@ namespace Stockpot.BusinessLogic.Recipes
 
             return await DbContextProvider.SaveChangesAsync();
         }
+        */
 
         /*
         * Tags
         */
+        /*
         public async Task<int> AddTag(int recipeId, int tagId)
         {
             var recipe = await Repository.GetSingle(recipeId, true);
@@ -121,5 +159,6 @@ namespace Stockpot.BusinessLogic.Recipes
 
             return await DbContextProvider.SaveChangesAsync();
         }
+        */
     }
 }

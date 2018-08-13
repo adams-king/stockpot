@@ -22,6 +22,7 @@ namespace Stockpot.WebApi.Controllers
             return Ok(ingredients);
         }
 
+        /*
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
@@ -67,5 +68,6 @@ namespace Stockpot.WebApi.Controllers
 
             return NoContent();
         }
+        */
     }
 }

@@ -5,6 +5,13 @@ namespace Stockpot.DataAccess.Entities
 {
     public class Recipe : IEntity<int>
     {
+        public Recipe()
+        {
+            RecipeIngredients = new List<RecipeIngredient>();
+            PreparationSteps = new List<PreparationStep>();
+            RecipeTags = new List<RecipeTag>();
+        }
+
         public int Id { get; set; }
 
         [MaxLength(200)]

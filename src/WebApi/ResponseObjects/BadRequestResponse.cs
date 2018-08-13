@@ -9,6 +9,10 @@ namespace Stockpot.WebApi.ResponseObjects
     {
         public IEnumerable<string> Errors { get; }
 
+#if DEBUG
+        public IEnumerable<string> Exceptions { get; }
+#endif
+
         public BadRequestResponse(ModelStateDictionary modelState)
         {
             if (modelState.IsValid)
@@ -18,7 +22,15 @@ namespace Stockpot.WebApi.ResponseObjects
 
             Errors = modelState
                 .SelectMany(x => x.Value.Errors)
-                .Select(x => x.ErrorMessage).ToArray();
+                .Select(x => x.ErrorMessage)
+                .ToArray();
+
+#if DEBUG
+            Exceptions = modelState
+                .SelectMany(x => x.Value.Errors)
+                .Select(x => x.Exception?.Message)
+                .ToArray();
+#endif
         }
     }
 }

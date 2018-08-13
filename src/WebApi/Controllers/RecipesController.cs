@@ -44,14 +44,15 @@ namespace Stockpot.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]CreateUpdateRecipeDto createDto)
+        public async Task<IActionResult> Post([FromBody]CreateRecipeDto createDto)
         {
-            var dto = await _recipesService.Add(createDto);
+            var dto = await _recipesService.AddFull(createDto);
             return NoContent();
         }
 
+        /*
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody]CreateUpdateRecipeDto updateDto)
+        public async Task<IActionResult> Put(int id, [FromBody]UpdateRecipeDto updateDto)
         {
             var changes = await _recipesService.Update(id, updateDto);
 
@@ -62,6 +63,7 @@ namespace Stockpot.WebApi.Controllers
 
             return NoContent();
         }
+        */
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
@@ -79,6 +81,7 @@ namespace Stockpot.WebApi.Controllers
         /*
          * Ingredients
          */
+        /*
         [HttpPost("{id}/ingredient/add")]
         public async Task<IActionResult> AddIngredient(int id, [FromBody]CreateRecipeIngredientDto createDto)
         {
@@ -112,10 +115,12 @@ namespace Stockpot.WebApi.Controllers
 
             return NoContent();
         }
+        */
 
         /*
         * Tags
         */
+        /*
         [HttpPost("{id}/tag/add/{tagId}")]
         public async Task<IActionResult> AddTag(int id, int tagId)
         {
@@ -136,5 +141,6 @@ namespace Stockpot.WebApi.Controllers
 
             return NoContent();
         }
+        */
     }
 }
