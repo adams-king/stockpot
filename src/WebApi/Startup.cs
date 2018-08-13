@@ -94,7 +94,11 @@ namespace Stockpot.WebApi
             DbInitializer.Initialize(dbContextProvider);
 
             // Add CORS
-            app.UseCors(builder => builder.WithOrigins("*"));
+            app.UseCors(builder => builder
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials());
 
             // Add swagger when in development
             if (env.IsDevelopment())
